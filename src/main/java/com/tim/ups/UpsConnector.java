@@ -208,6 +208,40 @@ public class UpsConnector {
                 "</ShipmentAcceptRequest>\n";
         return SoapUtil.postXml(xml, url);
     }
+    
+    public JSON addressValidation(AddressDTO address) {
+        String url = isDebug() ? "https://wwwcie.ups.com/ups.app/xml/AV" : "https://onlinetools.ups.com/ups.app/xml/AV";
+        String xml = "<?xml version=\"1.0\"?>\n" +
+                "<AccessRequest>\n" +
+                "    <AccessLicenseNumber>" + accountDTO.getKey() + "</AccessLicenseNumber>\n" +
+                "    <Password>" + accountDTO.getUserPwd() + "</Password>\n" +
+                "    <UserId>" + accountDTO.getUserId() + "</UserId>\n" +
+                "</AccessRequest>\n" +
+                "\n" +
+                "        <?xml version=\"1.0\"?>\n" +
+                "<AddressValidationRequest xml:lang=\"en-US\">\n" +
+                "   <Request>\n" +
+                "      <TransactionReference>\n" +
+                "         <CustomerContext>Customer Data</CustomerContext>\n" +
+                "         <XpciVersion>1.0001</XpciVersion>\n" +
+                "      </TransactionReference>\n" +
+                "      <RequestAction>AV</RequestAction>\n" +
+                "   </Request>\n" +
+                "   <Address>\n" +
+                "      <City>" + address.getCity() + "</City>\n" +
+                "      <StateProvinceCode>" + address.getState() + "</StateProvinceCode>\n" +
+                "      <CountryCode>" + address.getCountry() + "</CountryCode>\n" +
+                "      <PostalCode>" + address.getZip() + "</PostalCode>\n" +
+                "   </Address>\n" +
+                "</AddressValidationRequest>\n";
 
+        return (JSON) JSON.parse(XmlUtil.xmlToJson(SoapUtil.postXml(xml, url)));
+    }
+
+    public boolean isAddressValidation(AddressDTO address) {
+        JSONObject addressValidationResult = (JSONObject) addressValidation(address);
+        String validationResponse = addressValidationResult.getJSONObject("AddressValidationResponse").getJSONObject("Response").getString("ResponseStatusDescription");
+        return "Success".equals(validationResponse);
+    }
 
 }
