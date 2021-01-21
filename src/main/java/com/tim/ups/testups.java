@@ -10,7 +10,7 @@ public class testups {
 
         UpsConnector ups = new UpsConnector();
         AccountDTO account = new AccountDTO();
-        account.setKey("AD8F1CEFE623BA15");
+        account.setKey("AD8F1CE******15");
         account.setUserId("xxxxxx");
         account.setUserPwd("xxxxxx");
         account.setUserAccountId("xxxxxx");
@@ -44,8 +44,9 @@ public class testups {
 
 
 
-
-        System.out.println(ups.getlable(upsPackageDTO,shipTo,"label.jpg"));
+        if(ups.isAddressValidation(shipTo)){
+            System.out.println(ups.getlable(upsPackageDTO,shipTo,"label.jpg"));
+        }
         //System.out.println(ups.trackingInfo("1Z8339V50332234089"));
         //System.out.println(ups.trackingInfo("aaaaaa"));
     }
