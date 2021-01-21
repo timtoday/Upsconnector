@@ -3,7 +3,7 @@ Ups Lable print,Tracking API Sample
 
 
 
-#UPS面单打印、跟踪封装
+#UPS面单打印、跟踪封装、地址验证
 采用http+xml拼接方式替代官方SOAP代码
 更简单轻量级。
 
@@ -42,9 +42,10 @@ Ups Lable print,Tracking API Sample
         shipTo.setPhone("2024561111");
 
 
-
-        
-
+        //addressValidation
+        //System.out.println(ups.isAddressValidation(shipTo)); 
+        //print Label
         System.out.println(ups.getlable(upsPackageDTO,shipTo,"label.jpg"));
+        //tacking
         //System.out.println(ups.trackingInfo("1Z8339V50332234089"));
  ```
